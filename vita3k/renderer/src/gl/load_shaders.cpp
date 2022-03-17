@@ -1,5 +1,5 @@
 // Vita3K emulator project
-// Copyright (C) 2021 Vita3K team
+// Copyright (C) 2022 Vita3K team
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ bool get_shaders_cache_hashs(GLState &renderer, const char *base_path, const cha
         // Check version of cache
         uint32_t versionInFile;
         shaders_hashs.read((char *)&versionInFile, sizeof(uint32_t));
-        if (versionInFile != 1) {
+        if (versionInFile != shader::CURRENT_VERSION) {
             LOG_WARN("Current version of cache: {}, is outdated, recreate it.", versionInFile);
             return false;
         }
@@ -66,8 +66,10 @@ bool get_shaders_cache_hashs(GLState &renderer, const char *base_path, const cha
 
             renderer.shaders_cache_hashs.push_back({ hash.frag, hash.vert });
         }
-    }
 
+        shaders_hashs.close();
+    }
+     
     return !renderer.shaders_cache_hashs.empty();
 }
 
